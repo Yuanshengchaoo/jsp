@@ -1,7 +1,6 @@
 package xju.web.mypetstore.web.servlet;
 
 import xju.web.mypetstore.domain.Cart;
-import xju.web.mypetstore.domain.Category;
 import xju.web.mypetstore.domain.Item;
 import xju.web.mypetstore.service.CatalogService;
 
@@ -20,12 +19,16 @@ public class AddItemToCartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String workingItemId = req.getParameter("workingItemId");
+        if (workingItemId == null || workingItemId.trim().isEmpty()) {
+            resp.sendRedirect(req.getContextPath() + "/mainForm");
+            return;
+        }
 
         HttpSession session = req.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {
             cart = new Cart();
-
+            session.setAttribute("cart", cart);
         }
 
         if (cart.containsItemId(workingItemId)) {
@@ -34,7 +37,12 @@ public class AddItemToCartServlet extends HttpServlet {
             CatalogService catalogService = new CatalogService();
             boolean isInStock = catalogService.isItemInStock(workingItemId);
             Item item = catalogService.getItem(workingItemId);
-            cart.addItem(item, isInStock);
+            if (item != null) {
+                cart.addItem(item, isInStock);
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/mainForm");
+                return;
+            }
         }
         session.setAttribute("cart", cart);
         req.getRequestDispatcher(CART_FORM).forward(req, resp);
