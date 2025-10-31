@@ -41,4 +41,13 @@
         <url-pattern>/itemForm</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>AddItemToCartServlet</servlet-name>
+        <servlet-class>xju.web.mypetstore.web.servlet.AddItemToCartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddItemToCartServlet</servlet-name>
+        <url-pattern>/addItemToCart</url-pattern>
+    </servlet-mapping>
+
 </web-app>
