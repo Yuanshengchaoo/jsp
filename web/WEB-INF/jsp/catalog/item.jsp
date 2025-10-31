@@ -39,7 +39,10 @@
 
         <tr>
             <td>
-                <a href="addItemToCart?workingItemId=${sessionScope.item.itemId}">Add to Cart</a>
+                <c:url value="/addItemToCart" var="addToCartUrl">
+                    <c:param name="workingItemId" value="${sessionScope.item.itemId}" />
+                </c:url>
+                <a href="${addToCartUrl}">Add to Cart</a>
             </td>
         </tr>
     </table>
